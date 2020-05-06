@@ -1,46 +1,55 @@
 package rest;
 
 import javax.ejb.LocalBean;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("/client")
 @LocalBean
 public class RestClientBean implements RestClientRemote {
 
-	@Override
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	public String getAgentClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		return "getAgentClasses";
 	}
 
-	@Override
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	public String getRunningAgents() {
-		// TODO Auto-generated method stub
-		return null;
+		return "getRunningAgents";
 	}
 
-	@Override
+	@PUT
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
 	public String startAgent(String agentClass, String agentName) {
-		// TODO Auto-generated method stub
-		return null;
+		return "startAgent";
 	}
 
-	@Override
+	@DELETE
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
 	public String stopAgent(String agentAid) {
-		// TODO Auto-generated method stub
-		return null;
+		return "stopAgent";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String sendACLMessage() {
-		// TODO Auto-generated method stub
-		return null;
+		return "sendACLMessage";
 	}
 
-	@Override
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	public String getPerf() {
-		// TODO Auto-generated method stub
-		return null;
+		return "getPerf";
 	}
 
 }
