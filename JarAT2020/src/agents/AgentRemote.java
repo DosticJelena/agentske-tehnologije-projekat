@@ -4,7 +4,7 @@ import javax.ejb.Remote;
 import javax.jms.Message;
 
 @Remote
-public interface Agent {
+public interface AgentRemote {
 
 	public String init();
 	public void handleMessage(Message message);
