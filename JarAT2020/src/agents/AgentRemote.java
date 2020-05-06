@@ -8,6 +8,6 @@ public interface AgentRemote {
 
 	public String init();
 	public void handleMessage(Message message);
-	public String getAgentId();
+	public String getAgentAId();
 	
 }
