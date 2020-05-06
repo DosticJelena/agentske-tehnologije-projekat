@@ -1,64 +1,71 @@
 package rest;
 
 import javax.ejb.LocalBean;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 @Path("/server")
 @LocalBean
 public class RestServerBean implements RestServerRemote {
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String registerNewNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return "registerNewNode";
 	}
 
-	@Override
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	public String newNodeAgentClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		return "newNodeAgentClasses";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String notifyAboutNewNode() {
-		// TODO Auto-generated method stub
-		return null;
+		return "notifyAboutNewNode";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String notifyAboutNewAgentClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		return "notifyAboutNewAgentClasses";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String allNodes() {
-		// TODO Auto-generated method stub
-		return null;
+		return "allNodes";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String allAgentClasses() {
-		// TODO Auto-generated method stub
-		return null;
+		return "allAgentClasses";
 	}
 
-	@Override
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
 	public String allRunningAgents() {
-		// TODO Auto-generated method stub
-		return null;
+		return "allRunningAgents";
 	}
 
-	@Override
+	@DELETE
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
 	public String deleteDeadNode(String nodeAlias) {
-		// TODO Auto-generated method stub
-		return null;
+		return "deleteDeadNode";
 	}
 
-	@Override
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	public String handshake() {
-		// TODO Auto-generated method stub
-		return null;
+		return "handshake";
 	}
 
 }
