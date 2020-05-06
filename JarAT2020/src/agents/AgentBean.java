@@ -8,8 +8,7 @@ import javax.jms.Message;
 @LocalBean
 public class AgentBean implements AgentRemote {
 
-	private String agentAid;   //TODO AID 
-	private AgentType agentType;
+	private AID agentAid;  
 	
 	@Override
 	public String init() {
@@ -24,7 +23,7 @@ public class AgentBean implements AgentRemote {
 	}
 
 	@Override
-	public String getAgentAId() {
+	public AID getAgentAId() {
 		return agentAid;
 	}
 
