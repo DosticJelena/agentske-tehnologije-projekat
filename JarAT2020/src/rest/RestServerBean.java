@@ -30,16 +30,13 @@ public class RestServerBean implements RestServerRemote {
 	
 	////////////////////////////////////////
 	@POST
-	@Path("/node1")
+	@Path("/node")
 	@Produces(MediaType.TEXT_PLAIN)
 	public AID registerNewNode(AgentBean agClass, String runtimeName) {
 		//return agm.startServerAgent(agClass, runtimeName);
 		return null;
 	}
 	
-	@POST
-	@Path("/node2")
-	@Produces(MediaType.TEXT_PLAIN)
 	public String notifyAboutNewNode() {
 		return "notifyAboutNewNode";
 	}
@@ -54,17 +51,14 @@ public class RestServerBean implements RestServerRemote {
 
 	////////////////////////////////////////
 	@POST
-	@Path("/agents/classes1")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String notifyAboutNewAgentClasses() {
-		return "notifyAboutNewAgentClasses";
-	}
-	
-	@POST
-	@Path("/agents/classes2")
+	@Path("/agents/classes")
 	@Produces(MediaType.TEXT_PLAIN)
 	public List<AgentBean> allAgentClasses() {
 		return agm.getAvailableAgentClasses();
+	}
+	
+	public String notifyAboutNewAgentClasses() {
+		return "notifyAboutNewAgentClasses";
 	}
 	////////////////////////////////////////
 
