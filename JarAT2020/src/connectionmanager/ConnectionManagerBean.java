@@ -29,8 +29,6 @@ import nodes.NodeManager;
 @Path("/connection")
 public class ConnectionManagerBean implements ConnectionManager {
 
-	private String nodeAddr;
-	private String nodeName;
 	private AgentCenter ac = new AgentCenter();
 	private String master = null; // podesiti master adresu unutar init() metode
 	private List<String> connections = new ArrayList<String>();
@@ -44,18 +42,16 @@ public class ConnectionManagerBean implements ConnectionManager {
 			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 			ObjectName http = new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http");
 			
-			this.nodeAddr = (String) mBeanServer.getAttribute(http, "boundAddress");
-			this.ac.setAddress(this.nodeAddr + ":8080");
-			this.nodeName = NodeManager.getNodeName() + ":8080";
-			this.ac.setAlias(this.nodeName);
+			this.ac.setAddress((String) mBeanServer.getAttribute(http, "boundAddress") + ":8080");
+			this.ac.setAlias(NodeManager.getNodeName() + ":8080");
 			
 			this.master = "192.168.0.20:8080";
 
-			System.out.println("MASTER ADDR: " + master + ", node (agent center) alias: " + this.ac.getAlias() + ", node (agent center) address: " + this.ac.getAddress());
+			System.out.println("\nMASTER ADDR: " + master + ", node (agent center) alias: " + this.ac.getAlias() + ", node (agent center) address: " + this.ac.getAddress() + "\n");
 			
-			if (master != null && !master.equals("")) {
+			if (master != null && !master.equals("") && !master.equals(this.ac.getAddress())) {
 				ResteasyClient client = new ResteasyClientBuilder().build();
-				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/server");
+				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/connection");
 				ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 				this.connections = rest.newConnection(this.ac.getAlias());
 				this.connections.remove(this.ac.getAlias());
@@ -72,11 +68,11 @@ public class ConnectionManagerBean implements ConnectionManager {
 	}
 	
 	public String getNodeName() {
-		return this.nodeName;
+		return this.ac.getAlias();
 	}
 	
 	public String getNodeAddress() {
-		return this.nodeAddr;
+		return this.ac.getAddress();
 	}
 	
 	@Override
@@ -89,6 +85,14 @@ public class ConnectionManagerBean implements ConnectionManager {
 			rest.addConnection(connection);
 		}
 		connections.add(connection);
+		
+		System.out.println("--- ALL CONNECTIONS ---");
+		System.out.println("| Master| " + this.master + " | \n");
+		for (String c : connections) {
+			System.out.println("| Node | " + c + " | \n");
+		}
+		System.out.println("-----------------------");
+		
 		return connections;
 	}
 
