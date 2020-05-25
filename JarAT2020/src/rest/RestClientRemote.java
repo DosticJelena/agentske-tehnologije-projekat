@@ -1,6 +1,10 @@
 package rest;
 
+import java.util.List;
+
 import javax.ejb.Remote;
+
+import messagemanager.ACLMessage;
 
 @Remote
 public interface RestClientRemote {
@@ -9,7 +13,7 @@ public interface RestClientRemote {
 	public String getRunningAgents();
 	public String startAgent(String agentClass, String agentName);
 	public String stopAgent(String agentAid);
-	public String sendACLMessage();
-	public String getPerf();
+	public void sendACLMessage(ACLMessage msg);
+	public List<String> getPerf();
 	
 }

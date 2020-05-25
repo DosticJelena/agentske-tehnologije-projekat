@@ -1,5 +1,8 @@
 package rest;
 
+import java.util.List;
+
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -10,53 +13,66 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import agentmanager.AgentManager;
+import agents.AID;
+import agents.AgentBean;
+import messagemanager.MessageManager;
+
 @Path("/server")
 @LocalBean
 public class RestServerBean implements RestServerRemote {
 
+	@EJB
+	AgentManager agm;
+
+	@EJB
+	MessageManager msm;
+	
+	////////////////////////////////////////
 	@POST
 	@Path("/node1")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String registerNewNode() {
-		return "registerNewNode";
+	public AID registerNewNode(AgentBean agClass, String runtimeName) {
+		//return agm.startServerAgent(agClass, runtimeName);
+		return null;
 	}
-
-	@GET
-	@Path("/agents/classes1")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String newNodeAgentClasses() {
-		return "newNodeAgentClasses";
-	}
-
-	//ponovljena - spojiti
+	
 	@POST
 	@Path("/node2")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String notifyAboutNewNode() {
 		return "notifyAboutNewNode";
 	}
+	////////////////////////////////////////
 
-	//ponovljena - spojiti
+	@GET
+	@Path("/agents/classes")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String newNodeAgentClasses() {
+		return "newNodeAgentClasses";
+	}
+
+	////////////////////////////////////////
 	@POST
-	@Path("/agents/classes2")
+	@Path("/agents/classes1")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String notifyAboutNewAgentClasses() {
 		return "notifyAboutNewAgentClasses";
 	}
+	
+	@POST
+	@Path("/agents/classes2")
+	@Produces(MediaType.TEXT_PLAIN)
+	public List<AgentBean> allAgentClasses() {
+		return agm.getAvailableAgentClasses();
+	}
+	////////////////////////////////////////
 
 	@POST
 	@Path("/nodes")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String allNodes() {
 		return "allNodes";
-	}
-
-	//ponovljena - spojiti
-	@POST
-	@Path("/agents/classes3")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String allAgentClasses() {
-		return "allAgentClasses";
 	}
 
 	@POST

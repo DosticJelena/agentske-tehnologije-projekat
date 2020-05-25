@@ -1,5 +1,8 @@
 package rest;
 
+import java.util.List;
+
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -11,10 +14,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import messagemanager.ACLMessage;
+import messagemanager.MessageManager;
+
 @Path("/client")
 @LocalBean
 public class RestClientBean implements RestClientRemote {
 
+	@EJB
+	MessageManager msm;
+	
 	@GET
 	@Path("/agents/classes")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -48,15 +57,15 @@ public class RestClientBean implements RestClientRemote {
 	@POST
 	@Path("/messages")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String sendACLMessage() {
-		return "sendACLMessage";
+	public void sendACLMessage(ACLMessage msg) {
+		msm.post(msg, 0);
 	}
 
 	@GET
 	@Path("/messages")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getPerf() {
-		return "getPerf";
+	public List<String> getPerf() {
+		return msm.getPerformatives();
 	}
 
 }

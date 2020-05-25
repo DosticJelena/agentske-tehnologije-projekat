@@ -28,6 +28,4 @@ public class AgentCenter implements AgentCenterRemote {
 		this.address = address;
 	}
 	
-	
-	
 }

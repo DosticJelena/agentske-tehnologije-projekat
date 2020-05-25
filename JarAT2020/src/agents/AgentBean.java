@@ -2,7 +2,8 @@ package agents;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
-import javax.jms.Message;
+
+import messagemanager.ACLMessage;
 
 @Stateful
 @LocalBean
@@ -17,13 +18,13 @@ public class AgentBean implements AgentRemote {
 	}
 
 	@Override
-	public void handleMessage(Message message) {
+	public void handleMessage(ACLMessage message) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public AID getAgentAId() {
+	public AID getAgentAid() {
 		return agentAid;
 	}
 

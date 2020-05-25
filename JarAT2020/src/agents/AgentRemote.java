@@ -1,13 +1,14 @@
 package agents;
 
 import javax.ejb.Remote;
-import javax.jms.Message;
+
+import messagemanager.ACLMessage;
 
 @Remote
 public interface AgentRemote {
 
 	public String init();
-	public void handleMessage(Message message);
-	public AID getAgentAId();
+	public void handleMessage(ACLMessage message);
+	public AID getAgentAid();
 	
 }
