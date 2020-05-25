@@ -3,8 +3,11 @@ package agentmanager;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.Remote;
+
 import agents.AgentBean;
 
+@Remote
 public interface AgentManager extends Serializable {
 
 //	public void startServerAgent(AID aid, AgentInitArgs args, boolean replace);
