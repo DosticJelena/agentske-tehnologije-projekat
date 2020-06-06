@@ -1,8 +1,16 @@
 package rest;
 
+import java.lang.management.ManagementFactory;
 import java.util.List;
 
 import javax.ejb.LocalBean;
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,6 +27,7 @@ import connectionmanager.ConnectionManagerBean;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
+import nodes.NodeManager;
 import util.JNDILookup;
 
 @Path("/client")
@@ -82,7 +91,20 @@ public class RestClientBean implements RestClientRemote {
 	@Path("/host")
 	@Produces(MediaType.APPLICATION_JSON)
 	public AgentCenter getHost() {
-		return cnm().getNode();
+		try {
+			AgentCenter ac = new AgentCenter();
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			ObjectName http = new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http");
+			
+			ac.setAddress((String) mBeanServer.getAttribute(http, "boundAddress") + ":8080");
+			ac.setAlias(NodeManager.getNodeName() + ":8080");
+			return ac;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 	}
 
 }
