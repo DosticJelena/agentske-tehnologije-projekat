@@ -1,7 +1,6 @@
 package connectionmanager;
 
 import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +20,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import nodes.NodeManager;
+
 
 
 @Singleton
@@ -92,6 +92,11 @@ public class ConnectionManagerBean implements ConnectionManager {
 			System.out.println("| Node | " + c + " |");
 		}
 		System.out.println("-----------------------");
+		
+		//TODO: POST/node -> javiti ostalima da se nov cvor pojavio
+		//TODO: GET...POST/agent/classes -> master predaje novom tipove agenata, i ostalim daje njegove tipove
+		//TODO: POST/nodes -> dostavlja spisak ostalih servera novom serveru
+		
 		
 		return connections;
 	}

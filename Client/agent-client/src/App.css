@@ -1,0 +1,71 @@
+.App {
+  height: 100vh;
+}
+
+/* ------------------------------ */
+
+.AgentCenter {
+  background-color: rgb(38, 49, 46);
+  padding: 30px;
+  color: rgb(219, 191, 155);
+  height: 100vh;
+}
+
+.show-hide-btn {
+  border: 1px solid coral;
+  border-radius: 0;
+  margin-left: 30px;
+  color: coral;
+}
+
+.show-hide-btn:hover {
+  background-color: rgb(250, 235, 215, 0.2);
+  color: antiquewhite;
+}
+
+.active-btn {
+  background-color: rgb(250, 235, 215, 0.2);
+  color: antiquewhite;
+}
+
+.AgentCenter h1 {
+  color: coral;
+}
+
+.AgentCenter hr {
+  background-color: coral;
+}
+
+.this-node-info {
+  padding: 20px;
+}
+
+.this-node-info p {
+  font-size: 1.2rem;
+  color: antiquewhite;
+}
+
+.this-node-info p span {
+  border-bottom: 1px solid antiquewhite;
+}
+
+.all-nodes {
+  padding: 20px;
+  padding-top: 10px;
+}
+
+.all-nodes table {
+  width: 100%;
+}
+
+.all-nodes table tr {
+  border-bottom: 1px solid antiquewhite;
+}
+
+.all-nodes table tr:nth-child(1) {
+  border-bottom: 2px solid antiquewhite;
+}
+
+.all-nodes table td {
+  padding: 10px 15px;
+}
