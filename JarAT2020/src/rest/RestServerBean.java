@@ -2,7 +2,6 @@ package rest;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,34 +13,31 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agentmanager.AgentManager;
-import agents.AID;
+import agentmanager.AgentManagerBean;
 import agents.AgentBean;
 import messagemanager.MessageManager;
+import messagemanager.MessageManagerBean;
+import util.JNDILookup;
 
 @Path("/server")
 @LocalBean
 public class RestServerBean implements RestServerRemote {
 
-	@EJB
-	AgentManager agm;
+	protected AgentManager agm() {
+		return (AgentManager)JNDILookup.lookUp(JNDILookup.AgentManagerLookup, AgentManagerBean.class);
+	}
 
-	@EJB
-	MessageManager msm;
+	protected MessageManager msm() {
+		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
+	}
 	
-	////////////////////////////////////////
 	@POST
 	@Path("/node")
-	@Produces(MediaType.TEXT_PLAIN)
-	public AID registerNewNode(AgentBean agClass, String runtimeName) {
-		//return agm.startServerAgent(agClass, runtimeName);
-		return null;
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> registerNewNode(String node, String master, List<String> connections) {
+		return agm().registerNewNode(node, master, connections);
 	}
 	
-	public String notifyAboutNewNode() {
-		return "notifyAboutNewNode";
-	}
-	////////////////////////////////////////
-
 	@GET
 	@Path("/agents/classes")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -54,7 +50,7 @@ public class RestServerBean implements RestServerRemote {
 	@Path("/agents/classes")
 	@Produces(MediaType.TEXT_PLAIN)
 	public List<AgentBean> allAgentClasses() {
-		return agm.getAvailableAgentClasses();
+		return agm().getAvailableAgentClasses();
 	}
 	
 	public String notifyAboutNewAgentClasses() {

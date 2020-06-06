@@ -1,9 +1,6 @@
-/META-INF/
-/agentcenter/
-/agentmanager/
-/agents/
-/connectionmanager/
-/messagemanager/
-/nodes/
-/rest/
 /util/
+/rest/
+/nodes/
+/connectionmanager/
+/agentmanager/
+/agentcenter/

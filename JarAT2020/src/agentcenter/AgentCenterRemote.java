@@ -1,5 +1,7 @@
 package agentcenter;
 
-public interface AgentCenterRemote {
+import java.io.Serializable;
+
+public interface AgentCenterRemote extends Serializable {
 
 }

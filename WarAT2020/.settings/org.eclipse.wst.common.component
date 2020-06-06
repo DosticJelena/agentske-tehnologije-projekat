@@ -2,6 +2,7 @@
     <wb-module deploy-name="WarAT2020">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
         <property name="context-root" value="WarAT2020"/>
         <property name="java-output-path" value="/WarAT2020/build/classes"/>
     </wb-module>

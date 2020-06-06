@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="JarAT2020">
         <wb-resource deploy-path="/" source-path="/src" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/" source-path="/resources"/>
         <property name="java-output-path" value="/JarAT2020/build/classes"/>
     </wb-module>
 </project-modules>

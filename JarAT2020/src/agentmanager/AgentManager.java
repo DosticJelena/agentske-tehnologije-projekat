@@ -30,4 +30,6 @@ public interface AgentManager extends Serializable {
 //
 //	public void move(AID aid, String host, List<ObjectField> agent);
 	
+	public List<String> registerNewNode(String node, String master, List<String> connections);
+	
 }

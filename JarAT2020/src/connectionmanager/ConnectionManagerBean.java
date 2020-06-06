@@ -20,6 +20,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import nodes.NodeManager;
+import rest.RestServerRemote;
 
 
 
@@ -51,9 +52,9 @@ public class ConnectionManagerBean implements ConnectionManager {
 			
 			if (master != null && !master.equals("") && !master.equals(this.ac.getAddress())) {
 				ResteasyClient client = new ResteasyClientBuilder().build();
-				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/connection");
-				ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
-				this.connections = rest.newConnection(this.ac.getAddress());
+				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/server");
+				RestServerRemote rest = rtarget.proxy(RestServerRemote.class);
+				this.connections = rest.registerNewNode(this.ac.getAddress(), this.master, this.connections);
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
 			}
@@ -63,6 +64,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 		}
 	}
 	
+	@Override
 	public AgentCenter getNode() {
 		return this.ac;
 	}
@@ -73,32 +75,6 @@ public class ConnectionManagerBean implements ConnectionManager {
 	
 	public String getNodeAddress() {
 		return this.ac.getAddress();
-	}
-	
-	@Override
-	public List<String> newConnection(String connection) {
-		System.out.println("New node/agent center registered: " + connection);
-		for (String c : connections) {
-			ResteasyClient client = new ResteasyClientBuilder().build();
-			ResteasyWebTarget rtarget = client.target("http://" + c + "/WarAT2020/rest/connection");
-			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
-			rest.addConnection(connection);
-		}
-		connections.add(connection);
-		
-		System.out.println("--- ALL CONNECTIONS ---");
-		System.out.println("| Master| " + this.master + " |");
-		for (String c : connections) {
-			System.out.println("| Node | " + c + " |");
-		}
-		System.out.println("-----------------------");
-		
-		//TODO: POST/node -> javiti ostalima da se nov cvor pojavio
-		//TODO: GET...POST/agent/classes -> master predaje novom tipove agenata, i ostalim daje njegove tipove
-		//TODO: POST/nodes -> dostavlja spisak ostalih servera novom serveru
-		
-		
-		return connections;
 	}
 
 	@Override

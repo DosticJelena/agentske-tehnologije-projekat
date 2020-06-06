@@ -2,7 +2,6 @@ package rest;
 
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,15 +13,24 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import agentcenter.AgentCenter;
+import connectionmanager.ConnectionManager;
+import connectionmanager.ConnectionManagerBean;
 import messagemanager.ACLMessage;
 import messagemanager.MessageManager;
+import messagemanager.MessageManagerBean;
+import util.JNDILookup;
 
 @Path("/client")
 @LocalBean
 public class RestClientBean implements RestClientRemote {
 
-	@EJB
-	MessageManager msm;
+	protected MessageManager msm() {
+		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
+	}
+	protected ConnectionManager cnm() {
+		return (ConnectionManager)JNDILookup.lookUp(JNDILookup.ConnectionManagerLookup, ConnectionManagerBean.class);
+	}
 	
 	@GET
 	@Path("/agents/classes")
@@ -58,14 +66,23 @@ public class RestClientBean implements RestClientRemote {
 	@Path("/messages")
 	@Produces(MediaType.TEXT_PLAIN)
 	public void sendACLMessage(ACLMessage msg) {
-		msm.post(msg, 0);
+		msm().post(msg, 0);
 	}
 
 	@GET
 	@Path("/messages")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<String> getPerf() {
-		return msm.getPerformatives();
+		return msm().getPerformatives();
+	}
+	
+	//dodatno
+	
+	@GET
+	@Path("/host")
+	@Produces(MediaType.APPLICATION_JSON)
+	public AgentCenter getHost() {
+		return cnm().getNode();
 	}
 
 }
