@@ -21,6 +21,7 @@ import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import nodes.NodeManager;
 import rest.RestServerRemote;
+import rest.dto.NodeDTO;
 
 
 
@@ -54,7 +55,8 @@ public class ConnectionManagerBean implements ConnectionManager {
 				ResteasyClient client = new ResteasyClientBuilder().build();
 				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/server");
 				RestServerRemote rest = rtarget.proxy(RestServerRemote.class);
-				this.connections = rest.registerNewNode(this.ac.getAddress(), this.master, this.connections);
+				NodeDTO dto = new NodeDTO(this.ac.getAddress(), this.master, this.connections);
+				this.connections = rest.registerNewNode(dto);
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
 			}
