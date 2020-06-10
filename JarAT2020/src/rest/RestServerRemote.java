@@ -12,18 +12,18 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import agents.AgentBean;
+import agents.AgentType;
 import rest.dto.NodeDTO;
 
 @Remote
 public interface RestServerRemote {
 
 
-	@POST
-	@Path("/node")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public List<String> registerNewNode(NodeDTO dto);
+//	@POST
+//	@Path("/node")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public List<String> registerNewNode(NodeDTO dto);
 	
 	@GET
 	@Path("/agents/classes")
@@ -38,7 +38,7 @@ public interface RestServerRemote {
 	@POST
 	@Path("/agents/classes")
 	@Produces(MediaType.TEXT_PLAIN)
-	public List<AgentBean> allAgentClasses();
+	public List<AgentType> allAgentClasses();
 
 	@POST
 	@Path("/agents/running")
