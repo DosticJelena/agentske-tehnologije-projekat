@@ -37,12 +37,12 @@ public class MDBConsumer implements MessageListener {
 	}
 
 	private void deliverMessage(ACLMessage msg, AID aid) {
-		AgentRemote agent = agm.getAgentReference(aid);
-		if (agent != null) {
-			agent.handleMessage(msg);
-		} else {
-			System.out.println("No such agent: {" + aid.getName() + "}");
-		}
+//		AgentRemote agent = agm.getAgentReference(aid);
+//		if (agent != null) {
+//			agent.handleMessage(msg);
+//		} else {
+//			System.out.println("No such agent: {" + aid.getName() + "}");
+//		}
 	}
 	
 }
