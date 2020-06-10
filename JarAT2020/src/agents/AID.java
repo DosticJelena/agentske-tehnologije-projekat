@@ -1,8 +1,10 @@
 package agents;
 
+import java.io.Serializable;
+
 import agentcenter.AgentCenter;
 
-public class AID {
+public class AID implements Serializable {
 
 	private String name;
 	private AgentType type;

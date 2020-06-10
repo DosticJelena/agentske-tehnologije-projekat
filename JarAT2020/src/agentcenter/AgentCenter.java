@@ -1,6 +1,8 @@
 package agentcenter;
 
-public class AgentCenter implements AgentCenterRemote {
+import java.io.Serializable;
+
+public class AgentCenter implements Serializable {
 
 	private String alias;
 	private String address;
