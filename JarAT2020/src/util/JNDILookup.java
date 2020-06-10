@@ -6,6 +6,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
 import connectionmanager.ConnectionManager;
@@ -50,5 +51,14 @@ public class JNDILookup {
 			e.printStackTrace();
 		}
 		return bean;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T lookUpWithAgentCenter(String name, Class<T> c, AgentCenter remote) {
+		try {
+			return (T) ContextFactory.get(remote).lookup(name);
+		} catch (NamingException ex) {
+			throw new IllegalStateException("Failed to lookup " + name, ex);
+		}
 	}
 }
