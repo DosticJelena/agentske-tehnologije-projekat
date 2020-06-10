@@ -12,9 +12,8 @@ public class AgentBean implements AgentRemote {
 	private AID agentAid;  
 	
 	@Override
-	public String init() {
-		// TODO Auto-generated method stub
-		return null;
+	public void init(AID aid) {
+		this.agentAid = aid;;
 	}
 
 	@Override
@@ -26,6 +25,11 @@ public class AgentBean implements AgentRemote {
 	@Override
 	public AID getAgentAid() {
 		return agentAid;
+	}
+	
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
 	}
 
 }
