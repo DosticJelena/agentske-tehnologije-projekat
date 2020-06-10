@@ -1,6 +1,8 @@
 package agents;
 
-public class AgentType {
+import java.io.Serializable;
+
+public class AgentType implements Serializable {
 
 	private String type;
 	private String module;
