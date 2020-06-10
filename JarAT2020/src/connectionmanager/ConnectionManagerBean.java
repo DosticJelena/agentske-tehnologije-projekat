@@ -53,10 +53,9 @@ public class ConnectionManagerBean implements ConnectionManager {
 			
 			if (master != null && !master.equals("") && !master.equals(this.ac.getAddress())) {
 				ResteasyClient client = new ResteasyClientBuilder().build();
-				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/server");
-				RestServerRemote rest = rtarget.proxy(RestServerRemote.class);
-				NodeDTO dto = new NodeDTO(this.ac.getAddress(), this.master, this.connections);
-				this.connections = rest.registerNewNode(dto);
+				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/connection");
+				ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
+				this.connections = rest.newConnection(this.ac.getAddress());
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
 			}
@@ -67,8 +66,26 @@ public class ConnectionManagerBean implements ConnectionManager {
 	}
 	
 	@Override
+	public List<String> newConnection(String connection) {
+		System.out.println("New node registered: " + connection);
+		for (String c : connections) {
+			ResteasyClient client = new ResteasyClientBuilder().build();
+			ResteasyWebTarget rtarget = client.target("http://" + c + "/WarAT2020/rest/connection");
+			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
+			rest.addConnection(connection);
+		}
+		connections.add(connection);
+		return connections;
+	}
+	
+	@Override
 	public AgentCenter getNode() {
 		return this.ac;
+	}
+	
+	@Override
+	public List<String> getConnections() {
+		return this.connections;
 	}
 	
 	public String getNodeName() {
