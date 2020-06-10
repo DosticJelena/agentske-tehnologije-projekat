@@ -4,14 +4,16 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import agents.AID;
+import agents.AgentType;
 import messagemanager.ACLMessage;
 
 @Remote
 public interface RestClientRemote {
 
-	public String getAgentClasses();
-	public String getRunningAgents();
-	public String startAgent(String agentClass, String agentName);
+	public List<AgentType> getAgentClasses();
+	public List<AID> getRunningAgents();
+	public AID startAgent(String agentType, String agentName);
 	public String stopAgent(String agentAid);
 	public void sendACLMessage(ACLMessage msg);
 	public List<String> getPerf();

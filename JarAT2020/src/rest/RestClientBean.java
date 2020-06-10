@@ -4,13 +4,8 @@ import java.lang.management.ManagementFactory;
 import java.util.List;
 
 import javax.ejb.LocalBean;
-import javax.management.AttributeNotFoundException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanException;
 import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
-import javax.management.ReflectionException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,6 +17,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agentcenter.AgentCenter;
+import agentmanager.AgentManager;
+import agentmanager.AgentManagerBean;
+import agents.AID;
+import agents.AgentBean;
+import agents.AgentType;
 import connectionmanager.ConnectionManager;
 import connectionmanager.ConnectionManagerBean;
 import messagemanager.ACLMessage;
@@ -34,6 +34,9 @@ import util.JNDILookup;
 @LocalBean
 public class RestClientBean implements RestClientRemote {
 
+	protected AgentManager agm() {
+		return (AgentManager)JNDILookup.lookUp(JNDILookup.AgentManagerLookup, AgentManagerBean.class);
+	}
 	protected MessageManager msm() {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
 	}
@@ -43,24 +46,26 @@ public class RestClientBean implements RestClientRemote {
 	
 	@GET
 	@Path("/agents/classes")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getAgentClasses() {
-		return "getAgentClasses";
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<AgentType> getAgentClasses() {
+		return agm().getAvailableAgentClasses();
 	}
 
 	@GET
 	@Path("/agents/running")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getRunningAgents() {
-		return "getRunningAgents";
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<AID> getRunningAgents() {
+		return agm().getRunningAgents();
 	}
 
 	@PUT
 	@Path("/agents/running/{type}/{name}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public String startAgent(@PathParam("type") String agentClass, String agentName) {
-		return "startAgent" + " | " + agentClass + " | " + agentName;
+	@Produces(MediaType.APPLICATION_JSON)
+	public AID startAgent(@PathParam("type") String agentType, @PathParam("name") String agentName) {
+		AgentType at = new AgentType();
+		at.setModule("EarAT2020/JarAT2020");
+		at.setType(agentType);
+		return agm().startServerAgent(at, agentName);
 	}
 
 	@DELETE
