@@ -15,7 +15,7 @@ class Nodes extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://192.168.0.20:8080/WarAT2020/rest/client/host")
+        axios.get(this.props.masterURL + "/client/host")
             .then(response => {
                 console.log(response);
                 this.setState({
@@ -53,7 +53,7 @@ class Nodes extends React.Component {
                     <hr />
                     <div className="all-nodes">
                         <table>
-                            <tr><td>IP Address</td><td>Port</td><td>Alias</td></tr>
+                            <tr><td><strong>IP Address</strong></td><td><strong>Port</strong></td><td><strong>Alias</strong></td></tr>
                             <tr><td>192.168.0.33</td><td>8080</td><td>desktop2</td></tr>
                             <tr><td>192.168.0.40</td><td>8080</td><td>desktop3</td></tr>
                         </table>

@@ -11,7 +11,7 @@ class Messages extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://192.168.0.20:8080/WarAT2020/rest/client/messages")
+        axios.get(this.props.masterURL + "/client/messages")
             .then(response => {
                 console.log(response);
                 this.setState({ performatives: response.data })
