@@ -31,7 +31,7 @@ public class JNDILookup {
         jndiProperties.put(Context.URL_PKG_PREFIXES, 
           "org.jboss.ejb.client.naming");
         jndiProperties.put(Context.PROVIDER_URL, 
-           "http-remoting://192.168.0.20:8080");
+           "http-remoting://192.168.0.16:8080");
         jndiProperties.put("jboss.naming.client.ejb.context", true);
         return new InitialContext(jndiProperties);
     }
