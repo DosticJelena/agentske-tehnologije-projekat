@@ -1,21 +1,23 @@
 package agentmanager;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import javax.naming.NamingException;
 
 import agentcenter.AgentCenter;
 import agents.AID;
 import agents.AgentRemote;
 import agents.AgentType;
+import nodes.NodeManager;
 import util.AgentTypeLookup;
 import util.JNDILookup;
 
@@ -26,14 +28,12 @@ public class AgentManagerBean implements AgentManager {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Map<AID, AgentRemote> agents = new HashMap<>();
-	
 	@EJB
 	private AgentTypeLookup agentTypeLookup;
 	
 	@Override
 	public List<AID> getRunningAgents() {
-		Set<AID> set = agents.keySet();
+		Set<AID> set = RunningAgents.getAgents().keySet();
 		if (set.size() > 0) {
 			AID aid = set.iterator().next();
 			try {
@@ -44,7 +44,7 @@ public class AgentManagerBean implements AgentManager {
 				}
 			} catch (Exception ex) {
 				set.remove(aid);
-				agents.remove(aid);
+				RunningAgents.getAgents().remove(aid);
 			}
 		}
 		return new ArrayList<AID>(set);
@@ -52,32 +52,45 @@ public class AgentManagerBean implements AgentManager {
 	
 	@Override
 	public void stopAgent(AID aid) {
-		AgentRemote agent = agents.get(aid);
+		AgentRemote agent = RunningAgents.getAgent(aid);
 		if (agent != null) {
 			agent.stop();
-			agents.remove(aid);
+			RunningAgents.removeAgent(aid);
 		}
 	}
 	
 	@Override
 	public AID startServerAgent(AgentType type, String name) {
-		AgentCenter host = new AgentCenter("test","192.168.0.20");
-
-		AID aid = new AID(name, type, host);
-		AgentRemote agent = null;
-
 		try {
-			String path = getAgentLookup(aid.getType(), true);
-			agent = JNDILookup.lookUpWithAgentCenter(path, AgentRemote.class, null);
-		} catch (IllegalStateException ex) {
-			String path = getAgentLookup(aid.getType(), true);
-			agent = JNDILookup.lookUpWithAgentCenter(path, AgentRemote.class, null);
-		}
+			AgentCenter host = new AgentCenter();
+			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			ObjectName http;
+			http = new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http");
+			
+			host.setAddress((String) mBeanServer.getAttribute(http, "boundAddress") + ":8080");
+			host.setAlias(NodeManager.getNodeName() + ":8080");
+			
+			AID aid = new AID(name, type, host);
+			AgentRemote agent = null;
 
-		agents.put(aid, agent);
-		agent.init(aid);
+			try {
+				String path = getAgentLookup(aid.getType(), true);
+				agent = JNDILookup.lookUpWithAgentCenter(path, AgentRemote.class, null);
+			} catch (IllegalStateException ex) {
+				String path = getAgentLookup(aid.getType(), true);
+				agent = JNDILookup.lookUpWithAgentCenter(path, AgentRemote.class, null);
+			}
+
+			RunningAgents.getAgents().put(aid, agent);
+			agent.init(aid);
+			
+			return aid;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
-		return aid;
 	}
 	
 	@Override
