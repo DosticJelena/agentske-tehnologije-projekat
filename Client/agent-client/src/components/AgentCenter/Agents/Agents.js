@@ -12,7 +12,7 @@ class Agents extends React.Component {
     }
 
     getRunningAgents = () => {
-        axios.get("http://192.168.0.20:8080/WarAT2020/rest/client/agents/running")
+        axios.get(this.props.masterURL + "/client/agents/running")
             .then(response => {
                 console.log(response);
                 this.setState({
@@ -25,7 +25,26 @@ class Agents extends React.Component {
     }
 
     startAgentFunction = (type, name) => {
-        axios.put("http://192.168.0.20:8080/WarAT2020/rest/client/agents/running/" + type + "/" + name)
+        axios.put(this.props.masterURL + "/client/agents/running/" + type + "/" + name)
+            .then(response => {
+                console.log(response);
+                this.getRunningAgents();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    stopAgentFunction = (agent) => {
+        var config = {
+            headers: { 'Content-Type': 'application/json' },
+            data: {
+                host: agent.host,
+                type: agent.type,
+                name: agent.name
+            }
+        };
+        axios.delete(this.props.masterURL + "/client/agents/running", config)
             .then(response => {
                 console.log(response);
                 this.getRunningAgents();
@@ -36,7 +55,7 @@ class Agents extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://192.168.0.20:8080/WarAT2020/rest/client/agents/classes")
+        axios.get(this.props.masterURL + "/client/agents/classes")
             .then(response => {
                 console.log(response);
                 this.setState({
@@ -57,24 +76,31 @@ class Agents extends React.Component {
                     <h2>Agent Types</h2>
                     <hr />
                     {this.state.agentClasses.map(agentClass => {
-                        return <p>{agentClass.module}</p>
+                        return <p>
+                            {agentClass.module}
+                            <button className="btn" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button>
+                        </p>
                     })}
                     [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/classes]
                     [DELETE 192.168.0.20:8080/WarAT2020/rest/client/agents/running/..aid..]
                     <br />
-                    <h2>Start Agent</h2>
-                    <hr />
-                    <button className="btn" onClick={() => this.startAgentFunction("AgentBean","bean agent")}>Agent Bean</button>
-                    <button className="btn" onClick={() => this.startAgentFunction("Master","master agent")}>Master</button>
-                    <button className="btn" onClick={() => this.startAgentFunction("Collector","collect agent")}>Collector</button>
-                    <button className="btn" onClick={() => this.startAgentFunction("Searcher","search agent")}>Searcher</button>
                 </div>
                 <div className="col-8">
                     <h2>Running Agents</h2>
                     <hr />
-                    {this.state.runningAgents.map(agent => {
-                        return <p><strong>{agent.name}</strong> | host: {agent.host.address} | type: {agent.type.type}</p>
-                    })}
+                    <div className="all-nodes">
+                        <table>
+                            <tr><td><strong>Agent Name</strong></td><td><strong>Host Address</strong></td><td><strong>Type</strong></td><td><strong></strong></td></tr>                        
+                            {this.state.runningAgents.map(agent => {
+                                return <tr>
+                                    <td>{agent.name}</td>
+                                    <td>{agent.host.address}</td>
+                                    <td><em>{agent.type.type}</em></td>
+                                    <td><button className="btn" onClick={() => this.stopAgentFunction(agent)}>Stop</button></td>
+                                </tr>
+                            })}
+                        </table>
+                    </div>
                     [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/running]
                 </div>
             </div>
