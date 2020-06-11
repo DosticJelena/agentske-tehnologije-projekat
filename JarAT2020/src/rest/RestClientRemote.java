@@ -14,7 +14,7 @@ public interface RestClientRemote {
 	public List<AgentType> getAgentClasses();
 	public List<AID> getRunningAgents();
 	public AID startAgent(String agentType, String agentName);
-	public String stopAgent(String agentAid);
+	public AID stopAgent(AID agentAid);
 	public void sendACLMessage(ACLMessage msg);
 	public List<String> getPerf();
 	

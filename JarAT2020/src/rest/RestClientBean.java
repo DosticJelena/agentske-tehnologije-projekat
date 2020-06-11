@@ -69,11 +69,12 @@ public class RestClientBean implements RestClientRemote {
 	}
 
 	@DELETE
-	@Path("/agents/running/{aid}")
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public String stopAgent(@PathParam("aid") String agentAid) {
-		return "stopAgent" + " | " + agentAid;
+	@Path("/agents/running")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public AID stopAgent(AID agentAid) {
+		agm().stopAgent(agentAid);
+		return agentAid;
 	}
 
 	@POST
