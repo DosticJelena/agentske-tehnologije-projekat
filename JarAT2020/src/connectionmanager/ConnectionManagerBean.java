@@ -40,6 +40,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 	
 	@PostConstruct
 	private void init() {
+					
 		try {
 			MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 			ObjectName http = new ObjectName("jboss.as:socket-binding-group=standard-sockets,socket-binding=http");
@@ -50,6 +51,10 @@ public class ConnectionManagerBean implements ConnectionManager {
 			this.master = "192.168.0.20:8080";
 
 			System.out.println("\nMASTER ADDR: " + master + ", node (agent center) alias: " + this.ac.getAlias() + ", node (agent center) address: " + this.ac.getAddress() + "\n");
+			
+			System.out.println("Sleep (start)");
+			Thread.sleep(4000);
+			System.out.println("Sleep (end)");
 			
 			if (master != null && !master.equals("") && !master.equals(this.ac.getAddress())) {
 				ResteasyClient client = new ResteasyClientBuilder().build();
