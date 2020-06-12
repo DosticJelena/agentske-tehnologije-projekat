@@ -47,7 +47,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 			this.ac.setAddress((String) mBeanServer.getAttribute(http, "boundAddress") + ":8080");
 			this.ac.setAlias(NodeManager.getNodeName() + ":8080");
 			
-			this.master = "192.168.0.16:8080";
+			this.master = "192.168.0.20:8080";
 
 			System.out.println("\nMASTER ADDR: " + master + ", node (agent center) alias: " + this.ac.getAlias() + ", node (agent center) address: " + this.ac.getAddress() + "\n");
 			

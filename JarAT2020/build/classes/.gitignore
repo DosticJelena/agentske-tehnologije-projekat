@@ -1,8 +1,8 @@
-/util/
-/rest/
-/nodes/
-/connectionmanager/
-/agentmanager/
 /agentcenter/
+/agentmanager/
 /agents/
+/connectionmanager/
 /messagemanager/
+/nodes/
+/rest/
+/util/

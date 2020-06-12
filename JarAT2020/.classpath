@@ -13,9 +13,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="D:/siebog-lite/siebog-jar/lib/infinispan-commons-8.2.8.Final.jar"/>
-	<classpathentry kind="lib" path="D:/siebog-lite/siebog-jar/lib/infinispan-core-8.2.8.Final.jar"/>
-	<classpathentry kind="lib" path="D:/siebog-lite/siebog-jar/lib/jboss-cli-client.jar"/>
-	<classpathentry kind="lib" path="D:/siebog-lite/siebog-jar/lib/jboss-client.jar"/>
+	<classpathentry kind="lib" path="D:/agentske-tehnologije-projekat/jsoup-1.11.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

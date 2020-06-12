@@ -78,7 +78,7 @@ class Agents extends React.Component {
                     {this.state.agentClasses.map(agentClass => {
                         return <p>
                             {agentClass.module}
-                            <button className="btn" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button>
+                            <button className="btn start-stop" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button>
                         </p>
                     })}
                     [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/classes]
@@ -96,7 +96,7 @@ class Agents extends React.Component {
                                     <td>{agent.name}</td>
                                     <td>{agent.host.address}</td>
                                     <td><em>{agent.type.type}</em></td>
-                                    <td><button className="btn" onClick={() => this.stopAgentFunction(agent)}>Stop</button></td>
+                                    <td><button className="btn start-stop" onClick={() => this.stopAgentFunction(agent)}>Stop</button></td>
                                 </tr>
                             })}
                         </table>

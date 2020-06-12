@@ -9,7 +9,8 @@ import messagemanager.ACLMessage;
 @LocalBean
 public class Searcher implements AgentRemote {
 
-	private AID agentAid;  
+	private AID agentAid;
+
 	
 	@Override
 	public void init(AID aid) {
