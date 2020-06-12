@@ -25,6 +25,9 @@ public interface ConnectionManager {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public List<String> newConnection(String connection);
 	
+	@GET
+	@Path("/host")
+	@Produces(MediaType.APPLICATION_JSON)
 	AgentCenter getNode();
 	
 	@GET
