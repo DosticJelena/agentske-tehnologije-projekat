@@ -1,7 +1,9 @@
+/META-INF/
 /agentcenter/
 /agentmanager/
 /agents/
 /connectionmanager/
+/jboss-ejb-client.properties
 /messagemanager/
 /nodes/
 /rest/

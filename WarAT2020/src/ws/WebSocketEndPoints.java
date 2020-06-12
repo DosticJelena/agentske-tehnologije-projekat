@@ -1,8 +1,8 @@
 package ws;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
@@ -11,49 +11,40 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 @Singleton
 @LocalBean
-@ServerEndpoint(value="/ws/{username}")
+@ServerEndpoint(value="/ws")
 public class WebSocketEndPoints {
 
-	private static Map<String, Session> sessions = new HashMap<String, Session>();
-	private static Map<String, String> sessionToUser = new HashMap<String, String>();
-	
+	private static List<Session> sessions = new ArrayList<Session>();
+
 	@OnOpen
-    public void onOpen(Session session, @PathParam("username") String username) throws IOException {
-    	sessions.put(username, session);
-    	sessionToUser.put(session.getId(), username);
-    }
-	
+	public void onOpen(Session session) throws IOException {
+		System.out.println("Kreirana sesija");
+		if (!sessions.contains(session)) {
+			sessions.add(session);
+		}
+	}
+
 	@OnMessage
-    public void onMessage(String message) {
-    	
-    }
-	
-	public void updateRunningAgents(String users) {
-//    	for (Session session: sessions.values()) {
-//    		try {
-//				session.getBasicRemote().sendText(users);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//    	}
-    }
-	
+	public void sendMessage(String jsonString) throws IOException {
+		System.out.println("Poslata poruka ws: " + jsonString);
+		for (Session s : sessions) {
+			s.getBasicRemote().sendText(jsonString);
+		}
+	}
+
 	@OnClose
 	public void close(Session session) throws IOException {
-		String username = sessionToUser.get(session.getId());
-		sessions.remove(username);
+		sessions.remove(session);
 		session.close();
 	}
-	
+
 	@OnError
 	public void error(Session session, Throwable t) throws IOException {
-		String username = sessionToUser.get(session.getId());
-		sessions.remove(username);
+		sessions.remove(session);
 		session.close();
 		t.printStackTrace();
 	}

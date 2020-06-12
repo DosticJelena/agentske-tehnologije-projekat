@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import agents.AID;
+import util.JSON;
 
 public class ACLMessage implements Serializable {
 
@@ -49,9 +52,9 @@ public class ACLMessage implements Serializable {
 	}
 	
 	public ACLMessage(String jsonString) throws Exception {
-		/*System.out.println("ACLMessage JSON: " + jsonString);
+		System.out.println("ACLMessage JSON: " + jsonString);
 		
-		ACLMessage m = JSON.g.fromJson(jsonString, ACLMessage.class);
+		ACLMessage m = JSON.om.readValue(jsonString, ACLMessage.class);
 		System.out.println("ACLMessage m: " + m);
 		
 		this.content = m.content;
@@ -66,7 +69,7 @@ public class ACLMessage implements Serializable {
 		this.replyBy = m.replyBy;
 		this.replyTo = m.replyTo;
 		this.sender = m.sender;
-		this.userArgs = m.userArgs;*/
+		this.userArgs = m.userArgs;
 	}
 	
 	public boolean canReplyTo() {
@@ -91,9 +94,14 @@ public class ACLMessage implements Serializable {
 		return reply;
 	}
 	
-	/*@Override
+	@Override
 	public String toString() {
-		return JSON.g.toJson(this);
-	}*/
+		try {
+			return JSON.om.writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }

@@ -9,6 +9,7 @@ class AgentCenter extends React.Component {
         super(props);
         this.state = {
             masterURL: "http://192.168.0.20:8080/WarAT2020/rest",
+            wsURL: "ws://192.168.0.20:8080/WarAT2020/ws",
             showNodes: true,
             showAgents: false,
             showMessages: false
@@ -53,7 +54,7 @@ class AgentCenter extends React.Component {
                     <Nodes masterURL={this.state.masterURL}/>
                     : null}
                 {this.state.showAgents ?
-                    <Agents masterURL={this.state.masterURL}/>
+                    <Agents wsURL={this.state.wsURL} masterURL={this.state.masterURL}/>
                     : null}
                 {this.state.showMessages ?
                     <Messages masterURL={this.state.masterURL}/>

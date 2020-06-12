@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import agents.AID;
+import agents.AgentRemote;
 import agents.AgentType;
 
 @Remote
@@ -16,6 +17,8 @@ public interface AgentManager extends Serializable {
 	public void stopAgent(AID aid);
 
 	public List<AID> getRunningAgents();
+	
+	public AgentRemote getAgentReference(AID aid);
 
 //	public AID getAIDByRuntimeName(String runtimeName);
 

@@ -1,5 +1,6 @@
 package agentmanager;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.naming.NamingException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import agentcenter.AgentCenter;
 import agents.AID;
 import agents.AgentRemote;
@@ -20,6 +23,8 @@ import agents.AgentType;
 import nodes.NodeManager;
 import util.AgentTypeLookup;
 import util.JNDILookup;
+import util.JSON;
+import ws.WebSocketEndPoints;
 
 @Stateless
 @Remote(AgentManager.class)
@@ -30,6 +35,9 @@ public class AgentManagerBean implements AgentManager {
 	
 	@EJB
 	private AgentTypeLookup agentTypeLookup;
+	
+	@EJB
+	private WebSocketEndPoints ws;
 	
 	@Override
 	public List<AID> getRunningAgents() {
@@ -56,6 +64,13 @@ public class AgentManagerBean implements AgentManager {
 		if (agent != null) {
 			agent.stop();
 			RunningAgents.removeAgent(aid);
+			try {
+				ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents().keySet()));
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -83,6 +98,8 @@ public class AgentManagerBean implements AgentManager {
 
 			RunningAgents.getAgents().put(aid, agent);
 			agent.init(aid);
+			
+			ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents().keySet()));
 			
 			return aid;
 			
@@ -127,8 +144,8 @@ public class AgentManagerBean implements AgentManager {
 		}
 	}
 	
-//	private AgentRemote getAgentReference(AID aid) {
-//		
-//	}
+	public AgentRemote getAgentReference(AID aid) {
+		return RunningAgents.getAgent(aid);
+	}
 	
 }

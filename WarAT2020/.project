@@ -3,6 +3,7 @@
 	<name>WarAT2020</name>
 	<comment></comment>
 	<projects>
+		<project>JarAT2020</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
