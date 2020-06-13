@@ -57,7 +57,7 @@ class AgentCenter extends React.Component {
                     <Agents wsURL={this.state.wsURL} masterURL={this.state.masterURL}/>
                     : null}
                 {this.state.showMessages ?
-                    <Messages masterURL={this.state.masterURL}/>
+                    <Messages wsURL={this.state.wsURL} masterURL={this.state.masterURL}/>
                     : null}
             </div>
         );

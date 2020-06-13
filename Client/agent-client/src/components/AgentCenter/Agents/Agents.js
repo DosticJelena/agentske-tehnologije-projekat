@@ -87,12 +87,14 @@ class Agents extends React.Component {
                 <div className="col-4">
                     <h2>Agent Types</h2>
                     <hr />
+                    <table>
                     {this.state.agentClasses.map(agentClass => {
-                        return <p>
-                            {agentClass.module}
-                            <button className="btn start-stop" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button>
-                        </p>
+                        return <tr>
+                            <td>| {agentClass.module} </td>
+                            <tr><button className="btn start-stop" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button></tr>
+                        </tr>
                     })}
+                    </table>
                     [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/classes]
                     [DELETE 192.168.0.20:8080/WarAT2020/rest/client/agents/running/..aid..]
                     <br />

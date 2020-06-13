@@ -11,6 +11,17 @@ class Messages extends React.Component {
         }
     }
 
+    socketFunc = () => {
+        var urlReg = this.props.wsURL;
+        var socketReg = new WebSocket(urlReg);
+        socketReg.onmessage = (msg) => {
+            console.log(socketReg.readyState + " ---- (message) ---- ");
+            console.log(JSON.parse(msg.data));
+            this.setState({runningAgents: JSON.parse(msg.data)});
+        }
+        socketReg.onclose = () => socketReg = null;
+    }
+
     getRunningAgents = () => {
         axios.get(this.props.masterURL + "/client/agents/running")
             .then(response => {
@@ -35,6 +46,7 @@ class Messages extends React.Component {
             });
 
         this.getRunningAgents();
+        this.socketFunc();
     }
 
     render() {
