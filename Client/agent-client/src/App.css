@@ -52,6 +52,8 @@
 .all-nodes {
   padding: 20px;
   padding-top: 10px;
+  max-height: 55vh;
+  overflow: auto;
 }
 
 .all-nodes table {
@@ -68,6 +70,7 @@
 
 .all-nodes table td {
   padding: 10px 15px;
+  max-width: 100px;
 }
 
 /* ----------------------- */
@@ -75,6 +78,17 @@
 .perfs {
   height: 60vh;
   overflow: auto;
+}
+
+.perf-btn {
+  display: block;
+  background: transparent;
+  color: white;
+  border: 0;
+}
+
+.perf-btn:hover {
+  color: coral;
 }
 
 .start-stop {
@@ -85,3 +99,52 @@
 .start-stop:hover {
   color: white;
 }
+
+ul {
+  list-style: none;
+}
+
+.dropdown, .sender {
+  margin-top: 20px;
+}
+
+.sender {
+  margin-top:30px;
+  border-bottom: 1px solid rgb(219, 191, 155);
+}
+
+.dropdown > button {
+  padding: 10px;
+  margin-left: 30px;
+  color: white;
+  background-color: transparent;
+  border: 1px solid coral;
+  border-radius: 0;
+}
+
+.dropdown ul {
+  padding: 10px;
+  border-radius: 0;
+}
+
+input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid rgb(219, 191, 155);
+}
+
+input:disabled {
+  color: white;
+}
+
+.dropdown-menu {
+  width: 220px;
+  padding: 10px;
+}
+
+.msg-btn {
+  background-color: coral;
+  border-radius: 0;
+  color: white;
+}
+

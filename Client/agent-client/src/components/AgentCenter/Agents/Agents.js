@@ -7,8 +7,23 @@ class Agents extends React.Component {
         super(props);
         this.state = {
             runningAgents: [],
-            agentClasses: []
+            agentClasses: [],
+            agClass: '',
+            agName: '',
+            names: [
+                "nekretnine.rs",
+                "4zida.rs",
+                "nadjidom.com"
+            ]
         }
+    }
+
+    setAgentClass = e => {
+        this.setState({ agClass: e.target.value });
+    }
+
+    setAgentName = e => {
+        this.setState({ agName: e.target.value});
     }
 
     socketFunc = () => {
@@ -17,7 +32,7 @@ class Agents extends React.Component {
         socketReg.onmessage = (msg) => {
             console.log(socketReg.readyState + " ---- (message) ---- ");
             console.log(JSON.parse(msg.data));
-            this.setState({runningAgents: JSON.parse(msg.data)});
+            this.setState({ runningAgents: JSON.parse(msg.data) });
         }
         socketReg.onclose = () => socketReg = null;
     }
@@ -35,10 +50,11 @@ class Agents extends React.Component {
             })
     }
 
-    startAgentFunction = (type, name) => {
-        axios.put(this.props.masterURL + "/client/agents/running/" + type + "/" + name)
+    startAgentFunction = () => {
+        axios.put(this.props.masterURL + "/client/agents/running/" + this.state.agClass + "/" + this.state.agName)
             .then(response => {
                 console.log(response);
+                this.setState({agClass: '', agName: ''})
                 this.getRunningAgents();
             })
             .catch(error => {
@@ -85,26 +101,63 @@ class Agents extends React.Component {
         return (
             <div className="row">
                 <div className="col-4">
-                    <h2>Agent Types</h2>
-                    <hr />
-                    <table>
-                    {this.state.agentClasses.map(agentClass => {
-                        return <tr>
-                            <td>| {agentClass.module} </td>
-                            <tr><button className="btn start-stop" onClick={() => this.startAgentFunction(agentClass.module, agentClass.module)}>Start</button></tr>
-                        </tr>
-                    })}
-                    </table>
-                    [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/classes]
-                    [DELETE 192.168.0.20:8080/WarAT2020/rest/client/agents/running/..aid..]
-                    <br />
+                    <div>
+                        <h2>Agent Types</h2>
+                        <hr />
+                        <table>
+                            {this.state.agentClasses.map(agentClass => {
+                                return <tr>
+                                    <td> {agentClass.module} </td>
+                                </tr>
+                            })}
+                        </table>
+                        <br />
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            <h2>Start Agent</h2>
+                            <hr />
+                            <div className="row">
+                                <div className="col-3">
+                                    <div className="dropdown">
+                                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Agent Type
+                                        </button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            {this.state.agentClasses.map(agentClass => {
+                                                return <button className="dropdown-item" value={agentClass.module} onClick={this.setAgentClass}>{agentClass.module}</button>
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-3">
+                                    <div className="dropdown">
+                                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Agent Name
+                                        </button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            {this.state.names.map(name => {
+                                                return <button className="dropdown-item" value={name} onClick={this.setAgentName}>{name}</button>
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-7">
+                                    {this.state.agClass === '' ? null : <label>Type: <input value={this.state.agClass} disabled className="sender" /></label>}
+                                    {this.state.agName === '' ? null : <label>Name: <input value={this.state.agName} disabled className="sender" /></label>}
+                                    {this.state.agClass === '' || this.state.agName === '' ? null : <button className="btn start-stop" onClick={this.startAgentFunction}>Start</button>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div className="col-8">
                     <h2>Running Agents</h2>
                     <hr />
                     <div className="all-nodes">
                         <table>
-                            <tr><td><strong>Agent Name</strong></td><td><strong>Host Address</strong></td><td><strong>Type</strong></td><td><strong></strong></td></tr>                        
+                            <tr><td><strong>Agent Name</strong></td><td><strong>Host Address</strong></td><td><strong>Type</strong></td><td><strong></strong></td></tr>
                             {this.state.runningAgents.map(agent => {
                                 return <tr>
                                     <td>{agent.name}</td>
@@ -115,7 +168,6 @@ class Agents extends React.Component {
                             })}
                         </table>
                     </div>
-                    [POST 192.168.0.20:8080/WarAT2020/rest/client/agents/running]
                 </div>
             </div>
         );

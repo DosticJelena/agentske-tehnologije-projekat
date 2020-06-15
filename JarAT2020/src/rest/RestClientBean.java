@@ -79,7 +79,7 @@ public class RestClientBean implements RestClientRemote {
 
 	@POST
 	@Path("/messages")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void sendACLMessage(ACLMessage msg) {
 		msm().post(msg, 0);
 	}

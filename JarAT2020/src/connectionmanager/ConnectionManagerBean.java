@@ -21,7 +21,6 @@ import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import nodes.NodeManager;
 import rest.RestServerRemote;
-import rest.dto.NodeDTO;
 
 
 
@@ -53,10 +52,6 @@ public class ConnectionManagerBean implements ConnectionManager {
 			System.out.println("\nMASTER ADDR: " + master + ", node (agent center) alias: " + this.ac.getAlias() + ", node (agent center) address: " + this.ac.getAddress() + "\n");
 			
 			if (master != null && !master.equals("") && !master.equals(this.ac.getAddress())) {				
-
-				System.out.println("Sleep (start)");
-				Thread.sleep(7000);
-				System.out.println("Sleep (end)");
 				
 				ResteasyClient client = new ResteasyClientBuilder().build();
 				ResteasyWebTarget rtarget = client.target("http://" + master + "/WarAT2020/rest/connection");

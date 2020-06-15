@@ -18,8 +18,7 @@ public class Master implements AgentRemote {
 
 	@Override
 	public void handleMessage(ACLMessage message) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Master agent [" + agentAid.getName() + "] primio poruku");
 	}
 
 	@Override

@@ -13,10 +13,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="D:/agentske-tehnologije-projekat/jsoup-1.11.2.jar"/>
-	<classpathentry kind="lib" path="D:/agentske-tehnologije-projekat/jackson-annotations-2.8.4.jar"/>
-	<classpathentry kind="lib" path="D:/agentske-tehnologije-projekat/jackson-core-2.8.6.jar"/>
-	<classpathentry kind="lib" path="D:/agentske-tehnologije-projekat/jackson-databind-2.8.6.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/WarAT2020"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson-annotations-2.8.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson-core-2.8.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson-databind-2.8.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jsoup-1.11.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

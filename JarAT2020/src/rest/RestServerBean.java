@@ -10,7 +10,6 @@ import agentmanager.AgentManagerBean;
 import agents.AgentType;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
-import rest.dto.NodeDTO;
 import util.JNDILookup;
 
 @Path("/server")
@@ -24,10 +23,8 @@ public class RestServerBean implements RestServerRemote {
 	protected MessageManager msm() {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
 	}
+
 	
-//	public List<String> registerNewNode(NodeDTO dto) {
-//		return agm().registerNewNode(dto.getNode(), dto.getMaster(), dto.getConnections());
-//	}
 	
 	public String newNodeAgentClasses() {
 		return "newNodeAgentClasses";

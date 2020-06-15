@@ -13,7 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agents.AgentType;
-import rest.dto.NodeDTO;
 
 @Remote
 public interface RestServerRemote {

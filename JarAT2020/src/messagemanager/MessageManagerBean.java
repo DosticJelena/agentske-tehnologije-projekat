@@ -71,7 +71,6 @@ public class MessageManagerBean implements MessageManager {
 		AID aid = msg.receivers.get(index);
 		try {
 			ObjectMessage jmsMsg = session.createObjectMessage(msg);
-			jmsMsg.setObjectProperty("FullAID", aid);
 			jmsMsg.setIntProperty("AIDIndex", index);
 			defaultProducer.send(jmsMsg);
 		} catch (Exception ex) {

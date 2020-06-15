@@ -3,6 +3,7 @@ package messagemanager;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
+import javax.ejb.NoSuchEJBException;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -27,6 +28,9 @@ public class MDBConsumer implements MessageListener {
 			processMessage(msg);
 		} catch (JMSException ex) {
 			System.out.println("Cannot process an incoming message.");
+		} catch (NoSuchEJBException nEx) {
+			System.out.println("*** No such EJB Exception *** (...)");
+			nEx.printStackTrace();
 		}
 	}
 
