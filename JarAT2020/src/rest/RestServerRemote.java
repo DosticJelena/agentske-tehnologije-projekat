@@ -45,7 +45,7 @@ public interface RestServerRemote {
 
 	@POST
 	@Path("/agents/send")
-	@Consumes(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public void sendRunningAgents(String connection);
 	
 	@POST
