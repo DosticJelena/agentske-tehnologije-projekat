@@ -131,10 +131,10 @@ public class ConnectionManagerBean implements ConnectionManager {
 		@Schedule(hour="*", minute="*", second="*/20", info="healthcheck")
 	})
 	public void healthcheck() {
-		System.out.println("healthcheck");
+		System.out.println("healthcheck [" + this.connections.size() + "]");
 		
 		for(String connection : this.connections) {
-			if(connection.equals(this.ac.getAddress())) {
+			if(!connection.equals(this.ac.getAddress())) {
 				ResteasyClient rc = new ResteasyClientBuilder().build();			
 				String path = "http://" + connection + "/WarAT2020/rest/server";
 				ResteasyWebTarget rwt = rc.target(path);
