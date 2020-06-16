@@ -1,34 +1,31 @@
 package connectionmanager;
 
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Remote;
+import javax.ejb.Schedule;
+import javax.ejb.Schedules;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
-import agentmanager.RunningAgents;
-import agents.AID;
-import agents.AgentRemote;
+import javafx.scene.chart.PieChart.Data;
 import nodes.NodeManager;
 import rest.RestServerRemote;
-import util.JSON;
 import ws.WebSocketEndPoints;
 
 
@@ -121,6 +118,45 @@ public class ConnectionManagerBean implements ConnectionManager {
 		System.out.println("Adding connection... " + connection);
 		connections.add(connection);
 
+	}
+	
+	@Override
+	public void deleteConnection(String connection) {
+		System.out.println("Removing connection... " + connection);
+		connections.remove(connection);
+		System.out.println("Removed");
+	}
+	
+	@Schedules({
+		@Schedule(hour="*", minute="*", second="*/20", info="healthcheck")
+	})
+	public void healthcheck() {
+		System.out.println("healthcheck");
+		
+		for(String connection : this.connections) {
+			if(connection.equals(this.ac.getAddress())) {
+				ResteasyClient rc = new ResteasyClientBuilder().build();			
+				String path = "http://" + connection + "/WarAT2020/rest/server";
+				ResteasyWebTarget rwt = rc.target(path);
+				Response response = rwt.request(MediaType.APPLICATION_JSON).get();
+				
+				if(response.getStatus() != 200) {
+					Response response2 = rwt.request(MediaType.APPLICATION_JSON).get();
+					if(response2.getStatus() != 200) {
+						connections.remove(connection);
+						for(String c : connections) {
+							if(!c.equals(connection) && !c.equals(this.ac.getAddress())) {
+								ResteasyClient rc2 = new ResteasyClientBuilder().build();			
+								String path2 = "http://" + c + ":8080/ChatWAR/rest/server/node/" + connection;
+								ResteasyWebTarget rwt2 = rc2.target(path2);
+								Response response3 = rwt2.request(MediaType.APPLICATION_JSON).delete();
+								System.out.println("Status [deleted]: " + response3.getStatus());
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 }

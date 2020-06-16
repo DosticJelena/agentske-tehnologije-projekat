@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -19,6 +20,11 @@ public interface ConnectionManager {
 	@Path("/add")
 	@Consumes(MediaType.APPLICATION_JSON)
 	void addConnection(String connection);
+	
+	@DELETE
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	void deleteConnection(String connection);
 	
 	@POST
 	@Path("/new")

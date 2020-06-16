@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
@@ -18,6 +19,8 @@ import agentmanager.RunningAgents;
 import agents.AID;
 import agents.AgentRemote;
 import agents.AgentType;
+import connectionmanager.ConnectionManager;
+import connectionmanager.ConnectionManagerBean;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
 import util.JNDILookup;
@@ -34,6 +37,10 @@ public class RestServerBean implements RestServerRemote {
 
 	protected MessageManager msm() {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
+	}
+	
+	protected ConnectionManager cm() {
+		return (ConnectionManager)JNDILookup.lookUp(JNDILookup.ConnectionManagerLookup, ConnectionManagerBean.class);
 	}
 	
 	@EJB
@@ -60,10 +67,12 @@ public class RestServerBean implements RestServerRemote {
 	
 	@Override
 	public void sendRunningAgents(String connection) {
-		ResteasyClient client2 = new ResteasyClientBuilder().build();
-		ResteasyWebTarget rtarget2 = client2.target("http://" + connection + "/WarAT2020/rest/server");
-		RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
 		try {
+			ResteasyClient client2 = new ResteasyClientBuilder().build();
+			System.out.println("Salje zahtev...");
+			ResteasyWebTarget rtarget2 = client2.target("http://" + connection + "/WarAT2020/rest/server");
+			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+		
 			rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,12 +85,20 @@ public class RestServerBean implements RestServerRemote {
 		return "runningAgents";
 	}
 
-	public String deleteDeadNode(String nodeAlias) {
-		return "deleteDeadNode" + " | " + nodeAlias;
+	public Response deleteDeadNode(String node) {
+		try {
+			cm().deleteConnection(node);
+			System.out.println("deleted: " + node);
+			return Response.status(200).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(400).build();
+		}
 	}
 
-	public String handshake() {
-		return "handshake";
+	public Response handshake() {
+		System.out.println("alive");
+		return Response.status(200).build();
 	}
 
 }

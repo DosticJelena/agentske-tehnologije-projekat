@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import agents.AID;
 import agents.AgentRemote;
@@ -58,11 +59,10 @@ public interface RestServerRemote {
 	@Path("/node/{alias}")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public String deleteDeadNode(@PathParam("alias") String nodeAlias);
+	public Response deleteDeadNode(@PathParam("alias") String nodeAlias);
 	
 	@GET
 	@Path("/node")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String handshake();
+	public Response handshake();
 	
 }
