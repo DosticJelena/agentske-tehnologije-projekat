@@ -80,7 +80,6 @@ public class AID implements Serializable {
 	}
 
 	@Override
-	@JsonValue
 	public String toString() {
 		return "{'name': '" + name + "', 'type': " + type.toString() + ", 'host':" + host.toString() + "}";
 	}

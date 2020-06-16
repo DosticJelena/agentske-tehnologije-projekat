@@ -67,7 +67,6 @@ public class AgentType implements Serializable {
 	}
 
 	@Override
-	@JsonValue
 	public String toString() {
 		return "{'type': '" + type + "', 'module': '" + module + "'}";
 	}

@@ -64,7 +64,6 @@ public class AgentCenter implements Serializable {
 	}
 
 	@Override
-	@JsonValue
 	public String toString() {
 		return "{'alias': '" + alias + "', 'address': '" + address + "'}";
 	}

@@ -1,7 +1,9 @@
 package connectionmanager;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,12 +19,18 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import agentmanager.RunningAgents;
+import agents.AID;
+import agents.AgentRemote;
 import nodes.NodeManager;
 import rest.RestServerRemote;
 import util.JSON;
+import ws.WebSocketEndPoints;
 
 
 
@@ -38,6 +46,9 @@ public class ConnectionManagerBean implements ConnectionManager {
 
 	@EJB
 	private AgentManager agm;
+
+	@EJB
+	private WebSocketEndPoints ws;
 	
 	@PostConstruct
 	private void init() {
@@ -65,7 +76,16 @@ public class ConnectionManagerBean implements ConnectionManager {
 				ResteasyClient client2 = new ResteasyClientBuilder().build();
 				ResteasyWebTarget rtarget2 = client2.target("http://" + master + "/WarAT2020/rest/server");
 				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
-				rest2.allRunningAgents(JSON.om.writerWithDefaultPrettyPrinter().writeValueAsString(RunningAgents.getAgents()));
+				String agentsAsString = rest2.allRunningAgents();
+				try {
+					HashMap<AID,AgentRemote> agentsFromJson = (HashMap<AID,AgentRemote>)new ObjectMapper().readValue(agentsAsString, HashMap.class);
+					RunningAgents.agents = agentsFromJson;
+					ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents().keySet()));
+				} catch (JsonProcessingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 
 		} catch (Exception e) {

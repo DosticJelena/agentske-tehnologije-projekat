@@ -35,9 +35,6 @@ public class RestServerBean implements RestServerRemote {
 	protected MessageManager msm() {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
 	}
-
-	@EJB
-	private WebSocketEndPoints ws;
 	
 	
 	public String newNodeAgentClasses() {
@@ -58,19 +55,8 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
-	public String allRunningAgents(String agentss) {
-		TypeReference<HashMap<AID,AgentRemote>> typeRef = new TypeReference<HashMap<AID,AgentRemote>>() {};
-		try {
-			//RunningAgents.agents = JSON.om.readValue(agentss, typeRef);
-			HashMap<AID,AgentRemote> mapFromJson = (HashMap<AID,AgentRemote>)new ObjectMapper().readValue(agentss, HashMap.class);
-			RunningAgents.agents = mapFromJson;
-			ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents()));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return "allRunningAgents";
+	public String allRunningAgents() throws Exception {
+		return JSON.om.writeValueAsString(RunningAgents.getAgents());
 	}
 
 	public String deleteDeadNode(String nodeAlias) {

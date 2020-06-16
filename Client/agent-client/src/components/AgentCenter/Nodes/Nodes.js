@@ -10,7 +10,8 @@ class Nodes extends React.Component {
             hostPort: "",
             hostAlias: "",
             masterAddress: "192.168.0.20",
-            masterPort: "8080"
+            masterPort: "8080",
+            nodes: []
         }
     }
 
@@ -22,6 +23,17 @@ class Nodes extends React.Component {
                     hostAlias: response.data.alias.substr(0, response.data.alias.length - 5),
                     hostAddress: response.data.address.substr(0, response.data.address.length - 5),
                     hostPort: response.data.address.substr(response.data.address.length - 4, 4)
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+            axios.get(this.props.masterURL + "/connection")
+            .then(response => {
+                console.log(response);
+                this.setState({
+                    nodes: response.data
                 })
             })
             .catch(error => {
@@ -49,13 +61,13 @@ class Nodes extends React.Component {
                     </div>
                 </div>
                 <div className="col-8">
-                    <h2>All Nodes</h2>
+                    <h2>Other Nodes</h2>
                     <hr />
                     <div className="all-nodes">
                         <table>
-                            <tr><td><strong>IP Address</strong></td><td><strong>Port</strong></td><td><strong>Alias</strong></td></tr>
-                            <tr><td>192.168.0.33</td><td>8080</td><td>desktop2</td></tr>
-                            <tr><td>192.168.0.40</td><td>8080</td><td>desktop3</td></tr>
+                            <tr><td><strong>IP Address</strong></td><td><strong>Port</strong></td></tr>
+                            {this.state.nodes.map(node => <tr><td>{node.substr(0, node.length - 5)}</td><td>{node.substr(node.length - 4, 4)}</td></tr>)}
+                            
                         </table>
                     </div>
                 </div>
