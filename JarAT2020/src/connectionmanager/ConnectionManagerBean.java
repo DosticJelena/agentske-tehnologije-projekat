@@ -19,6 +19,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
+import agentmanager.RunningAgents;
 import nodes.NodeManager;
 import rest.RestServerRemote;
 
@@ -59,6 +60,11 @@ public class ConnectionManagerBean implements ConnectionManager {
 				this.connections = rest.newConnection(this.ac.getAddress());
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
+				
+				ResteasyClient client2 = new ResteasyClientBuilder().build();
+				ResteasyWebTarget rtarget2 = client2.target("http://" + master + "/WarAT2020/rest/server");
+				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+				rest2.allRunningAgents(RunningAgents.getAgents());
 			}
 
 		} catch (Exception e) {

@@ -1,16 +1,26 @@
 package rest;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Path;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
+import agentmanager.RunningAgents;
+import agents.AID;
+import agents.AgentRemote;
 import agents.AgentType;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
 import util.JNDILookup;
+import util.JSON;
+import ws.WebSocketEndPoints;
 
 @Path("/server")
 @LocalBean
@@ -24,6 +34,8 @@ public class RestServerBean implements RestServerRemote {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
 	}
 
+	@EJB
+	private WebSocketEndPoints ws;
 	
 	
 	public String newNodeAgentClasses() {
@@ -44,7 +56,15 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
-	public String allRunningAgents() {
+	public String allRunningAgents(Map<AID,AgentRemote> agentss) {
+		RunningAgents.agents = agentss;
+		try {
+			ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents()));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "allRunningAgents";
 	}
 
