@@ -45,6 +45,7 @@ public interface RestServerRemote {
 	@POST
 	@Path("/agents/running")
 	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public String allRunningAgents(Map<AID,AgentRemote> agents);
 	
 	@DELETE
