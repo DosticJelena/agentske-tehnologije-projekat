@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import agents.AID;
 import agents.AgentRemote;
 
@@ -13,6 +15,7 @@ import agents.AgentRemote;
 @LocalBean
 public class RunningAgents {
 
+	//@JsonDeserialize(keyUsing = MyCustomDeserializer.class)
 	public static Map<AID, AgentRemote> agents = new HashMap<>();
 
 	public static Map<AID, AgentRemote> getAgents() {

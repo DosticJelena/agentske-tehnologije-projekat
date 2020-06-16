@@ -79,7 +79,7 @@ public class AID implements Serializable {
 
 	@Override
 	public String toString() {
-		return "AID [name=" + name + ", type=" + type + ", host=" + host + "]";
+		return "{'name': '" + name + "', 'type': " + type.toString() + ", 'host':" + host.toString() + "}";
 	}
 	
 	
