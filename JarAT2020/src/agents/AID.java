@@ -76,6 +76,11 @@ public class AID implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "AID [name=" + name + ", type=" + type + ", host=" + host + "]";
+	}
 	
 	
 	
