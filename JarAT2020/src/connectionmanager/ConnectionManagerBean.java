@@ -77,7 +77,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
 				String agentsAsString = rest2.allRunningAgents();
 				try {
-					String[] keysValues = agentsAsString.split("|");
+					String keysValues[] = agentsAsString.split("|");
 					List<AID> keys = (List<AID>) JSON.om.readValue(keysValues[0], List.class);
 					List<AgentRemote> values = (List<AgentRemote>) JSON.om.readValue(keysValues[1], List.class);
 					for (int i=0; i<keys.size();i++) {
