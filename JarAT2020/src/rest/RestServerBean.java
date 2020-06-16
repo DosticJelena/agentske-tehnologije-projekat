@@ -59,16 +59,14 @@ public class RestServerBean implements RestServerRemote {
 	}
 	
 	@Override
-	public void sendRunningAgents(List<String> connections) {
-		for(String c: connections) {
-			ResteasyClient client2 = new ResteasyClientBuilder().build();
-			ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
-			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
-			try {
-				rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+	public void sendRunningAgents(String connection) {
+		ResteasyClient client2 = new ResteasyClientBuilder().build();
+		ResteasyWebTarget rtarget2 = client2.target("http://" + connection + "/WarAT2020/rest/server");
+		RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+		try {
+			rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
