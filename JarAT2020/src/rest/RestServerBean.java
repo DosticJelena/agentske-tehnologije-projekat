@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +54,7 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
-	public String allRunningAgents(Set<AID> agents, Set<AgentRemote> agentObjects) throws Exception {
+	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {
 		AID[] agentList = (AID[]) agents.toArray();
 		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
 		for (int i=0; i<agentList.length; i++) {

@@ -1,5 +1,6 @@
 package rest;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public interface RestServerRemote {
 	@Path("/agents/running")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String allRunningAgents(Set<AID> agnents, Set<AgentRemote> agentObjects) throws Exception;
+	public String allRunningAgents(Set<AID> agnents, Collection<AgentRemote> agentObjects) throws Exception;
 	
 	@DELETE
 	@Path("/node/{alias}")
