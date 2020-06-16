@@ -63,10 +63,10 @@ public class AgentCenter implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "{\"alias\": \"" + alias + "\", \"address\": \"" + address + "\"}";
-	}
+//	@Override
+//	public String toString() {
+//		return "{\"alias\": \"" + alias + "\", \"address\": \"" + address + "\"}";
+//	}
 	
 	
 	
