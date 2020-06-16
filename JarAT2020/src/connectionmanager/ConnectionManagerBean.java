@@ -120,6 +120,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 
 	@Override
 	public void addConnection(String connection) {
+		System.out.println("Adding connection... " + connection);
 		connections.add(connection);
 
 	}
