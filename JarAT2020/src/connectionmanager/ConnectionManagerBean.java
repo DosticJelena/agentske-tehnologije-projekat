@@ -71,6 +71,17 @@ public class ConnectionManagerBean implements ConnectionManager {
 				this.connections = rest.newConnection(this.ac.getAddress());
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
+				
+				for(String c: this.connections) {
+					ResteasyClient client2 = new ResteasyClientBuilder().build();
+					ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
+					RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+					try {
+						rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 
 		} catch (Exception e) {
@@ -87,14 +98,6 @@ public class ConnectionManagerBean implements ConnectionManager {
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			rest.addConnection(connection);
 			
-			ResteasyClient client2 = new ResteasyClientBuilder().build();
-			ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
-			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
-			try {
-				rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		}
 		connections.add(connection);
 		return connections;
