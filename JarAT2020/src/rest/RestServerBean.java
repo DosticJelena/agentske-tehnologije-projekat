@@ -9,7 +9,9 @@ import javax.ws.rs.Path;
 
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
+import agentmanager.RunningAgents;
 import agents.AID;
+import agents.AgentRemote;
 import agents.AgentType;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
@@ -51,7 +53,12 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
-	public String allRunningAgents(Set<AID> agents) throws Exception {
+	public String allRunningAgents(Set<AID> agents, Set<AgentRemote> agentObjects) throws Exception {
+		AID[] agentList = (AID[]) agents.toArray();
+		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
+		for (int i=0; i<agentList.length; i++) {
+			RunningAgents.agents.put(agentList[i], agentObjectList[i]);
+		}
 		ws.sendMessage(JSON.om.writeValueAsString(agents));
 		return "runningAgents";
 	}

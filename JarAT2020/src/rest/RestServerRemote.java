@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import agents.AID;
+import agents.AgentRemote;
 import agents.AgentType;
 
 @Remote
@@ -45,7 +46,7 @@ public interface RestServerRemote {
 	@Path("/agents/running")
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String allRunningAgents(Set<AID> agnents) throws Exception;
+	public String allRunningAgents(Set<AID> agnents, Set<AgentRemote> agentObjects) throws Exception;
 	
 	@DELETE
 	@Path("/node/{alias}")

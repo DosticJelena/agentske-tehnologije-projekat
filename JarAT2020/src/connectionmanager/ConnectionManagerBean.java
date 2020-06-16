@@ -91,7 +91,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 			ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
 			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
 			try {
-				rest2.allRunningAgents(RunningAgents.getAgents().keySet());
+				rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
