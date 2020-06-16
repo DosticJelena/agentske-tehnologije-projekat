@@ -54,6 +54,7 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
+	@Override
 	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {
 		AID[] agentList = (AID[]) agents.toArray();
 		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
