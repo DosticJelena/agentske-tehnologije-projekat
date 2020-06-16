@@ -68,7 +68,7 @@ public class AgentType implements Serializable {
 
 	@Override
 	public String toString() {
-		return "{'type': '" + type + "', 'module': '" + module + "'}";
+		return "{\"type\": \"" + type + "\", \"module\": \"" + module + "\"}";
 	}
 	
 	
