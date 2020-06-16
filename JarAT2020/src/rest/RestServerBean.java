@@ -1,22 +1,15 @@
 package rest;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Path;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
-import agentmanager.RunningAgents;
 import agents.AID;
-import agents.AgentRemote;
 import agents.AgentType;
 import messagemanager.MessageManager;
 import messagemanager.MessageManagerBean;
@@ -35,6 +28,9 @@ public class RestServerBean implements RestServerRemote {
 	protected MessageManager msm() {
 		return (MessageManager)JNDILookup.lookUp(JNDILookup.MessageManagerLookup, MessageManagerBean.class);
 	}
+	
+	@EJB
+	WebSocketEndPoints ws;
 	
 	
 	public String newNodeAgentClasses() {
@@ -55,10 +51,9 @@ public class RestServerBean implements RestServerRemote {
 		return "allNodes";
 	}
 
-	public String allRunningAgents() throws Exception {
-		String keys = JSON.om.writeValueAsString(RunningAgents.getAgents().keySet());
-		String values = JSON.om.writeValueAsString(RunningAgents.getAgents().values());
-		return keys + "|" + values;
+	public String allRunningAgents(Set<AID> agents) throws Exception {
+		ws.sendMessage(JSON.om.writeValueAsString(agents));
+		return "runningAgents";
 	}
 
 	public String deleteDeadNode(String nodeAlias) {

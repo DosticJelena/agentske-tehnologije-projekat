@@ -71,27 +71,6 @@ public class ConnectionManagerBean implements ConnectionManager {
 				this.connections = rest.newConnection(this.ac.getAddress());
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
-				
-				ResteasyClient client2 = new ResteasyClientBuilder().build();
-				ResteasyWebTarget rtarget2 = client2.target("http://" + master + "/WarAT2020/rest/server");
-				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
-				String agentsAsString = rest2.allRunningAgents();
-				System.out.println(agentsAsString);
-				try {
-					String[] keysValues = agentsAsString.split("|");
-					System.out.println(keysValues[0]);
-					System.out.println(keysValues[1]);
-					List<AID> keys = (List<AID>) JSON.om.readValue(keysValues[0], List.class);
-					List<AgentRemote> values = (List<AgentRemote>) JSON.om.readValue(keysValues[1], List.class);
-					for (int i=0; i<keys.size();i++) {
-						RunningAgents.agents.put(keys.get(i), values.get(i));
-					}
-					ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents().keySet()));
-				} catch (JsonProcessingException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 
 		} catch (Exception e) {
@@ -107,6 +86,15 @@ public class ConnectionManagerBean implements ConnectionManager {
 			ResteasyWebTarget rtarget = client.target("http://" + c + "/WarAT2020/rest/connection");
 			ConnectionManager rest = rtarget.proxy(ConnectionManager.class);
 			rest.addConnection(connection);
+			
+			ResteasyClient client2 = new ResteasyClientBuilder().build();
+			ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
+			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+			try {
+				rest2.allRunningAgents(RunningAgents.getAgents().keySet());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		connections.add(connection);
 		return connections;

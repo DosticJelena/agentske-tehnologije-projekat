@@ -1,6 +1,7 @@
 package rest;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Remote;
 import javax.ws.rs.Consumes;
@@ -12,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import agents.AID;
 import agents.AgentType;
 
 @Remote
@@ -42,7 +44,8 @@ public interface RestServerRemote {
 	@POST
 	@Path("/agents/running")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String allRunningAgents() throws Exception;
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String allRunningAgents(Set<AID> agnents) throws Exception;
 	
 	@DELETE
 	@Path("/node/{alias}")
