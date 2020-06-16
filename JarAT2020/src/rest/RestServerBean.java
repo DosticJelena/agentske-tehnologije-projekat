@@ -56,12 +56,12 @@ public class RestServerBean implements RestServerRemote {
 
 	@Override
 	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {
-		AID[] agentList = (AID[]) agents.toArray();
-		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
-		System.out.println("Setting running agents...");
-		for (int i=0; i<agentList.length; i++) {
-			RunningAgents.agents.put(agentList[i], agentObjectList[i]);
-		}
+//		AID[] agentList = (AID[]) agents.toArray();
+//		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
+//		System.out.println("Setting running agents...");
+//		for (int i=0; i<agentList.length; i++) {
+//			RunningAgents.agents.put(agentList[i], agentObjectList[i]);
+//		}
 		ws.sendMessage(JSON.om.writeValueAsString(agents));
 		return "runningAgents";
 	}

@@ -72,6 +72,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 				this.connections.remove(this.ac.getAddress());
 				this.connections.add(this.master);
 				
+				System.out.println(this.connections);
 				for(String c: this.connections) {
 					ResteasyClient client2 = new ResteasyClientBuilder().build();
 					ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
