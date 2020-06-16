@@ -8,6 +8,10 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ws.rs.Path;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
 import agentmanager.RunningAgents;
@@ -53,15 +57,23 @@ public class RestServerBean implements RestServerRemote {
 	public String allNodes() {
 		return "allNodes";
 	}
+	
+	@Override
+	public void sendRunningAgents(List<String> connections) {
+		for(String c: connections) {
+			ResteasyClient client2 = new ResteasyClientBuilder().build();
+			ResteasyWebTarget rtarget2 = client2.target("http://" + c + "/WarAT2020/rest/server");
+			RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
+			try {
+				rest2.allRunningAgents(RunningAgents.getAgents().keySet(), RunningAgents.getAgents().values());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
-	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {
-//		AID[] agentList = (AID[]) agents.toArray();
-//		AgentRemote[] agentObjectList = (AgentRemote[]) agentObjects.toArray();
-//		System.out.println("Setting running agents...");
-//		for (int i=0; i<agentList.length; i++) {
-//			RunningAgents.agents.put(agentList[i], agentObjectList[i]);
-//		}
+	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {		
 		ws.sendMessage(JSON.om.writeValueAsString(agents));
 		return "runningAgents";
 	}
