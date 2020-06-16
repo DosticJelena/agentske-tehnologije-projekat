@@ -85,6 +85,7 @@ public class RestServerBean implements RestServerRemote {
 		return "runningAgents";
 	}
 
+	@Override
 	public Response deleteDeadNode(String node) {
 		try {
 			cm().deleteConnection(node);
@@ -96,6 +97,7 @@ public class RestServerBean implements RestServerRemote {
 		}
 	}
 
+	@Override
 	public Response handshake() {
 		System.out.println("alive");
 		return Response.status(200).build();
