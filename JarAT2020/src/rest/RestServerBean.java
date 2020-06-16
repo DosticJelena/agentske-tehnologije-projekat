@@ -3,7 +3,6 @@ package rest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -11,6 +10,7 @@ import javax.ws.rs.Path;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
@@ -61,7 +61,9 @@ public class RestServerBean implements RestServerRemote {
 	public String allRunningAgents(String agentss) {
 		TypeReference<HashMap<AID,AgentRemote>> typeRef = new TypeReference<HashMap<AID,AgentRemote>>() {};
 		try {
-			RunningAgents.agents = JSON.om.readValue(agentss, typeRef);
+			//RunningAgents.agents = JSON.om.readValue(agentss, typeRef);
+			HashMap<AID,AgentRemote> mapFromJson = (HashMap<AID,AgentRemote>)new ObjectMapper().readValue(agentss, HashMap.class);
+			RunningAgents.agents = mapFromJson;
 			ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents()));
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
