@@ -137,23 +137,45 @@ public class ConnectionManagerBean implements ConnectionManager {
 				ResteasyClient rc = new ResteasyClientBuilder().build();			
 				String path = "http://" + connection + "/WarAT2020/rest/server/node";
 				ResteasyWebTarget rwt = rc.target(path);
-				Response response = rwt.request(MediaType.APPLICATION_JSON).get();
-				
-				if(response.getStatus() != 200) {
-					Response response2 = rwt.request(MediaType.APPLICATION_JSON).get();
-					if(response2.getStatus() != 200) {
-						iterator.remove();
-						for(String c : connections) {
-							if(!c.equals(connection) && !c.equals(this.ac.getAddress())) {
-								ResteasyClient rc2 = new ResteasyClientBuilder().build();			
-								String path2 = "http://" + c + "/WarAT2020/rest/server/node/" + connection;
-								ResteasyWebTarget rwt2 = rc2.target(path2);
-								Response response3 = rwt2.request(MediaType.APPLICATION_JSON).delete();
-								System.out.println("Status [deleted]: " + response3.getStatus());
+				try {
+					Response response = rwt.request(MediaType.APPLICATION_JSON).get();
+					
+					if(response.getStatus() != 200) {
+						Response response2 = rwt.request(MediaType.APPLICATION_JSON).get();
+						if(response2.getStatus() != 200) {
+							iterator.remove();
+							for(String c : connections) {
+								if(!c.equals(connection) && !c.equals(this.ac.getAddress())) {
+									ResteasyClient rc2 = new ResteasyClientBuilder().build();			
+									String path2 = "http://" + c + "/WarAT2020/rest/server/node/" + connection;
+									ResteasyWebTarget rwt2 = rc2.target(path2);
+									Response response3 = rwt2.request(MediaType.APPLICATION_JSON).delete();
+									System.out.println("Status [deleted]: " + response3.getStatus());
+								}
 							}
 						}
 					}
+				} catch (Exception e) {
+					try {
+						Response response2 = rwt.request(MediaType.APPLICATION_JSON).get();
+						if(response2.getStatus() != 200) {
+							iterator.remove();
+							for(String c : connections) {
+								if(!c.equals(connection) && !c.equals(this.ac.getAddress())) {
+									ResteasyClient rc2 = new ResteasyClientBuilder().build();			
+									String path2 = "http://" + c + "/WarAT2020/rest/server/node/" + connection;
+									ResteasyWebTarget rwt2 = rc2.target(path2);
+									Response response3 = rwt2.request(MediaType.APPLICATION_JSON).delete();
+									System.out.println("Status [deleted]: " + response3.getStatus());
+								}
+							}
+						}
+					} catch (Exception ee) {
+						iterator.remove();
+					}
 				}
+				
+				
 			}
 		}
 	}
