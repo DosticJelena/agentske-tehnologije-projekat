@@ -135,7 +135,7 @@ public class ConnectionManagerBean implements ConnectionManager {
 			String connection = iterator.next();
 			if(!connection.equals(this.ac.getAddress())) {
 				ResteasyClient rc = new ResteasyClientBuilder().build();			
-				String path = "http://" + connection + "/WarAT2020/rest/server";
+				String path = "http://" + connection + "/WarAT2020/rest/server/node";
 				ResteasyWebTarget rwt = rc.target(path);
 				Response response = rwt.request(MediaType.APPLICATION_JSON).get();
 				
