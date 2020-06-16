@@ -76,8 +76,11 @@ public class ConnectionManagerBean implements ConnectionManager {
 				ResteasyWebTarget rtarget2 = client2.target("http://" + master + "/WarAT2020/rest/server");
 				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
 				String agentsAsString = rest2.allRunningAgents();
+				System.out.println(agentsAsString);
 				try {
-					String keysValues[] = agentsAsString.split("|");
+					String[] keysValues = agentsAsString.split("|");
+					System.out.println(keysValues[0]);
+					System.out.println(keysValues[1]);
 					List<AID> keys = (List<AID>) JSON.om.readValue(keysValues[0], List.class);
 					List<AgentRemote> values = (List<AgentRemote>) JSON.om.readValue(keysValues[1], List.class);
 					for (int i=0; i<keys.size();i++) {
