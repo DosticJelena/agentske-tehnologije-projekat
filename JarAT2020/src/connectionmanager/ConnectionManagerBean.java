@@ -2,6 +2,7 @@ package connectionmanager;
 
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,9 +24,7 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
-import javafx.scene.chart.PieChart.Data;
 import nodes.NodeManager;
-import rest.RestServerRemote;
 import ws.WebSocketEndPoints;
 
 
@@ -132,8 +131,8 @@ public class ConnectionManagerBean implements ConnectionManager {
 	})
 	public void healthcheck() {
 		System.out.println("healthcheck [" + this.connections.size() + "]");
-		String[] connectionArray = (String[]) this.connections.toArray();
-		for(String connection : connectionArray) {
+		for(Iterator<String> iterator = connections.iterator(); iterator.hasNext();) {
+			String connection = iterator.next();
 			if(!connection.equals(this.ac.getAddress())) {
 				ResteasyClient rc = new ResteasyClientBuilder().build();			
 				String path = "http://" + connection + "/WarAT2020/rest/server";
@@ -143,11 +142,11 @@ public class ConnectionManagerBean implements ConnectionManager {
 				if(response.getStatus() != 200) {
 					Response response2 = rwt.request(MediaType.APPLICATION_JSON).get();
 					if(response2.getStatus() != 200) {
-						connections.remove(connection);
+						iterator.remove();
 						for(String c : connections) {
 							if(!c.equals(connection) && !c.equals(this.ac.getAddress())) {
 								ResteasyClient rc2 = new ResteasyClientBuilder().build();			
-								String path2 = "http://" + c + ":8080/ChatWAR/rest/server/node/" + connection;
+								String path2 = "http://" + c + "/WarAT2020/rest/server/node/" + connection;
 								ResteasyWebTarget rwt2 = rc2.target(path2);
 								Response response3 = rwt2.request(MediaType.APPLICATION_JSON).delete();
 								System.out.println("Status [deleted]: " + response3.getStatus());
