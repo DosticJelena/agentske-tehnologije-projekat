@@ -80,7 +80,7 @@ public class RestServerBean implements RestServerRemote {
 	}
 
 	@Override
-	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {		
+	public String allRunningAgents(Set<AID> agents, Collection<AgentRemote> agentObjects) throws Exception {
 		ws.sendMessage(JSON.om.writeValueAsString(agents));
 		return "runningAgents";
 	}

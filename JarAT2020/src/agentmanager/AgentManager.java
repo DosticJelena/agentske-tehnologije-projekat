@@ -20,14 +20,6 @@ public interface AgentManager extends Serializable {
 	
 	public AgentRemote getAgentReference(AID aid);
 
-//	public AID getAIDByRuntimeName(String runtimeName);
-
 	public List<AgentType> getAvailableAgentClasses();
-
-//	public void pingAgent(AID aid);
-//
-//	public void reconstructAgent(List<ObjectField> agent);
-//
-//	public void move(AID aid, String host, List<ObjectField> agent);
 	
 }

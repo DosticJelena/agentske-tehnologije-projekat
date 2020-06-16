@@ -16,11 +16,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jboss.resteasy.client.jaxrs.ResteasyClient;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
 import agentmanager.AgentManagerBean;
 import agents.AID;
-import agents.AgentBean;
 import agents.AgentType;
 import connectionmanager.ConnectionManager;
 import connectionmanager.ConnectionManagerBean;
