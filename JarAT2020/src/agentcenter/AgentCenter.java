@@ -60,6 +60,11 @@ public class AgentCenter implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "AgentCenter [alias=" + alias + ", address=" + address + "]";
+	}
 	
 	
 	
