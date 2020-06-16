@@ -2,6 +2,8 @@ package agentcenter;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class AgentCenter implements Serializable {
 
 	private String alias;
@@ -62,6 +64,7 @@ public class AgentCenter implements Serializable {
 	}
 
 	@Override
+	@JsonValue
 	public String toString() {
 		return "{'alias': '" + alias + "', 'address': '" + address + "'}";
 	}

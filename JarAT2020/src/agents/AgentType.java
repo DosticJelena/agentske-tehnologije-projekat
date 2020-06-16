@@ -2,6 +2,8 @@ package agents;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class AgentType implements Serializable {
 
 	private String type;
@@ -65,6 +67,7 @@ public class AgentType implements Serializable {
 	}
 
 	@Override
+	@JsonValue
 	public String toString() {
 		return "{'type': '" + type + "', 'module': '" + module + "'}";
 	}
