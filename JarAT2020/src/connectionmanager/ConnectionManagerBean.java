@@ -132,8 +132,8 @@ public class ConnectionManagerBean implements ConnectionManager {
 	})
 	public void healthcheck() {
 		System.out.println("healthcheck [" + this.connections.size() + "]");
-		
-		for(String connection : this.connections) {
+		String[] connectionArray = (String[]) this.connections.toArray();
+		for(String connection : connectionArray) {
 			if(!connection.equals(this.ac.getAddress())) {
 				ResteasyClient rc = new ResteasyClientBuilder().build();			
 				String path = "http://" + connection + "/WarAT2020/rest/server";
