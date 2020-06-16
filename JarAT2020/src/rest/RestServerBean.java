@@ -56,7 +56,9 @@ public class RestServerBean implements RestServerRemote {
 	}
 
 	public String allRunningAgents() throws Exception {
-		return JSON.om.writeValueAsString(RunningAgents.getAgents());
+		String keys = JSON.om.writeValueAsString(RunningAgents.getAgents().keySet());
+		String values = JSON.om.writeValueAsString(RunningAgents.getAgents().values());
+		return keys + "|" + values;
 	}
 
 	public String deleteDeadNode(String nodeAlias) {

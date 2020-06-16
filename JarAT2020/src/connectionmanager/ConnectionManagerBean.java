@@ -3,8 +3,8 @@ package connectionmanager;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -20,7 +20,6 @@ import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import agentcenter.AgentCenter;
 import agentmanager.AgentManager;
@@ -78,8 +77,12 @@ public class ConnectionManagerBean implements ConnectionManager {
 				RestServerRemote rest2 = rtarget2.proxy(RestServerRemote.class);
 				String agentsAsString = rest2.allRunningAgents();
 				try {
-					HashMap<AID,AgentRemote> agentsFromJson = (HashMap<AID,AgentRemote>)new ObjectMapper().readValue(agentsAsString, HashMap.class);
-					RunningAgents.agents = agentsFromJson;
+					String[] keysValues = agentsAsString.split("|");
+					List<AID> keys = (List<AID>) JSON.om.readValue(keysValues[0], List.class);
+					List<AgentRemote> values = (List<AgentRemote>) JSON.om.readValue(keysValues[1], List.class);
+					for (int i=0; i<keys.size();i++) {
+						RunningAgents.agents.put(keys.get(i), values.get(i));
+					}
 					ws.sendMessage(JSON.om.writeValueAsString(RunningAgents.getAgents().keySet()));
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
