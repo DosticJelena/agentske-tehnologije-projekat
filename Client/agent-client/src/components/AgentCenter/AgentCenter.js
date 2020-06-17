@@ -4,13 +4,15 @@ import Agents from './Agents/Agents';
 import Messages from './Messages/Messages';
 import Results from './Results/Results';
 
+import host from '../../_const/host';
+
 class AgentCenter extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            masterURL: "http://192.168.0.20:8080/WarAT2020/rest",
-            wsURL: "ws://192.168.0.20:8080/WarAT2020/ws",
+            masterURL: "http://" + host + "/WarAT2020/rest",
+            wsURL: "ws://" + host + "/WarAT2020/ws",
             showNodes: true,
             showAgents: false,
             showMessages: false,

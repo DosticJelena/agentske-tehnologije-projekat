@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import master from '../../../_const/master';
+
 class Nodes extends React.Component {
 
     constructor(props) {
@@ -9,8 +11,8 @@ class Nodes extends React.Component {
             hostAddress: "",
             hostPort: "",
             hostAlias: "",
-            masterAddress: "192.168.0.20",
-            masterPort: "8080",
+            masterAddress: master.substr(0, master.length  -5),
+            masterPort: master.substr(master.length - 4, 4),
             nodes: []
         }
     }
